@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance - NEIPS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="students.css">
+    <!-- Add this to your HTML head -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Removed QR scanner script since we don't need it -->
+</head>
+
+<body>
+    <!-- Student Header -->
+    <header class="student-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="../images/NeIPS-logo.jpg" alt="NEIPS Logo" class="logo">
+                <h1>NeIPS Student Portal</h1>
+            </div>
+            <div class="student-info">
+                <span id="studentName">Welcome</span>
+                <div class="header-actions">
+                    <button id="logoutBtn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="student-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Welcome, <span id="displayName">Student</span>.</h2>
+
+                </div>
+            </section>
+
+            <!-- Attendance Section -->
+            <section class="attendance-section">
+                <h3><i class="fas fa-fingerprint"></i> Daily Attendance</h3>
+
+                <!-- Current Status -->
+                <div class="attendance-status">
+                    <div class="status-indicator">
+                        <div class="status-circle" id="statusCircle"></div>
+                        <span id="statusText">Today's status: Not Marked</span>
+                    </div>
+                    <div class="time-info">
+                        <p id="currentTime">Time: Loading...</p>
+                        <p id="currentDate">Date: Loading...</p>
+                    </div>
+                </div>
+                <!-- Add this after the attendance status section -->
+                <div class="district-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>District</h4>
+                            <p id="districtInfo">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Trade</h4>
+                            <p id="tradeInfo">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>This Week</h4>
+                            <p id="weeklyAttendance">0/5 days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add this CSS -->
+                <style>
+                    .district-info {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 15px;
+                        margin: 20px 0;
+                    }
+
+                    .info-card {
+                        background: var(--card-bg);
+                        border-radius: 10px;
+                        padding: 15px;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        border: 1px solid var(--border-light);
+                        transition: transform 0.3s ease;
+                    }
+
+                    .info-card:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .info-icon {
+                        width: 40px;
+                        height: 40px;
+                        background: linear-gradient(135deg, var(--primary), #3b82f6);
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                    }
+
+                    .info-icon i {
+                        font-size: 18px;
+                    }
+
+                    .info-content h4 {
+                        margin: 0 0 5px 0;
+                        font-size: 14px;
+                        color: var(--text-muted);
+                    }
+
+                    .info-content p {
+                        margin: 0;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: var(--text-main);
+                    }
+
+                    /* Security indicators */
+                    .security-indicator {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 10px 15px;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        margin: 10px 0;
+                        border-left: 4px solid #28a745;
+                    }
+
+                    .security-indicator.low {
+                        border-left-color: #ffc107;
+                    }
+
+                    .security-indicator.high {
+                        border-left-color: #28a745;
+                    }
+
+                    .security-indicator .security-icon {
+                        color: #28a745;
+                        font-size: 18px;
+                    }
+
+                    .security-indicator.low .security-icon {
+                        color: #ffc107;
+                    }
+
+                    .security-text {
+                        font-size: 14px;
+                        color: #495057;
+                    }
+                </style>
+                <!-- Update the attendance options section in your HTML -->
+                <div class="attendance-options">
+                    <div class="option-card">
+                        <div class="option-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <h4>Face Authentication</h4>
+                        <p>Mark attendance using facial recognition</p>
+                        <div class="action-buttons">
+                            <button class="btn-attendance checkin" id="faceCheckInBtn">
+                                <i class="fas fa-sign-in-alt"></i> Face Check In
+                            </button>
+                            <button class="btn-attendance checkout" id="faceCheckOutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Face Check Out
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h4>Biometric</h4>
+                        <p>Mark attendance using fingerprint</p>
+                        <div class="action-buttons">
+                            <button class="btn-attendance checkin" id="biometricCheckInBtn">
+                                <i class="fas fa-sign-in-alt"></i> Bio Check In
+                            </button>
+                            <button class="btn-attendance checkout" id="biometricCheckOutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Bio Check Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .action-buttons {
+                        display: flex;
+                        gap: 10px;
+                        margin-top: 15px;
+                    }
+
+                    .btn-attendance {
+                        flex: 1;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        transition: all 0.3s ease;
+                    }
+
+                    .btn-attendance.checkin {
+                        background: #22c55e;
+                        color: white;
+                    }
+
+                    .btn-attendance.checkin:hover {
+                        background: #16a34a;
+                    }
+
+                    .btn-attendance.checkout {
+                        background: #3b82f6;
+                        color: white;
+                    }
+
+                    .btn-attendance.checkout:hover {
+                        background: #2563eb;
+                    }
+                </style>
+                <!-- Attendance Log -->
+                <div class="attendance-log">
+                    <h4><i class="fas fa-history"></i> Recent Attendance</h4>
+                    <div class="log-container">
+                        <table id="attendanceTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceBody">
+                                <!-- Attendance records will be loaded here -->
+                                <tr>
+                                    <td colspan="4" class="loading-text">Loading attendance records...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Webcam Container (hidden initially) -->
+                <div id="webcamContainer" class="webcam-container" style="display: none;">
+                    <div class="webcam-header">
+                        <h4><i class="fas fa-camera"></i> Face Authentication</h4>
+                        <button id="closeWebcam" class="btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="webcam-preview">
+                        <video id="webcamVideo" autoplay playsinline></video>
+                        <canvas id="webcamCanvas" style="display: none;"></canvas>
+                    </div>
+                    <div class="webcam-controls">
+                        <button id="captureBtn" class="btn-primary">
+                            <i class="fas fa-camera"></i> Capture & Verify
+                        </button>
+                        <button id="cancelScan" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                    <div id="scanResult" class="scan-result"></div>
+                </div>
+
+                <!-- Biometric Modal (you can implement this as needed) -->
+                <div id="biometricModal" class="modal-container" style="display: none;">
+                    <div class="modal-header">
+                        <h4><i class="fas fa-fingerprint"></i> Biometric Authentication</h4>
+                        <button id="closeBiometric" class="btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="biometric-icon">
+                            <i class="fas fa-fingerprint fa-4x"></i>
+                        </div>
+                        <p>Please place your finger on the fingerprint scanner...</p>
+                        <div id="biometricResult" class="scan-result"></div>
+                    </div>
+                    <div class="modal-controls">
+                        <button id="startBiometric" class="btn-primary">
+                            <i class="fas fa-play"></i> Start Scanning
+                        </button>
+                        <button id="cancelBiometric" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="student-footer">
+        <div class="container">
+            <p>&copy; 2025 NEIPS Institute. All rights reserved.</p>
+            <p>Attendance Portal v1.0 | Need help? Contact: 9330410244</p>
+        </div>
+    </footer>
+
+    <script src="students.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- REPLACE your current Firebase scripts with THESE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Add after your other scripts -->
+    <script src="./firebase-config.js"></script>
+    <meta name="google-site-verification" content="BuzD7lXN_GUBRKfS47g1FOth8fLCc47xheSkHj5mo3k" />
+    <meta charset="UTF-8">
+    <!-- Replace your current viewport tag with this -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- Add these to your HTML head -->
+    <script src="https://unpkg.com/face-api.js"></script>
+    <!-- WebAuthn polyfill for older browsers -->
+    <script src="https://unpkg.com/webauthn-polyfill/dist/webauthn-polyfill.min.js"></script>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9S4W39HHQE"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-9S4W39HHQE');
+        </script>
+        <!-- Replace this section in your <head> -->
+        <link rel="icon" type="image/x-icon" href="/images/logo.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+        <link rel="manifest" href="/site.webmanifest">
+
+        <title>NeIPS - Northeast Institute of Professional Studies | Vocational Training Meghalaya</title>
+        <!-- Copy this exact meta tag from Search Console -->
+
+        <link rel="stylesheet" href="styles.css">
+
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Michroma">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eurostile">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Zen+Dots">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
+            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet">
+
+
+    </head>
+
+<body>
+    <!-- Mobile Navigation Toggle -->
+    <!-- Mobile Navigation Toggle -->
+    <!-- Mobile Navigation Toggle -->
+    <!-- Mobile Navigation Toggle -->
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Main Logo (left side) -->
+            <div class="nav-logo">
+                <div class="logo-icon">
+                    <img src="images/NeIPS-logo.jpg" alt="NeIPS Logo" class="logo-image">
+                </div>
+                <div>
+                    <h1>NeIPS</h1>
+                </div>
+            </div>
+
+            <!-- Mobile Auth Logo (right side, next to hamburger) -->
+            <div class="mobile-auth-logo" id="mobileAuthLogo">
+                <!-- Logo icon -->
+                <div class="mobile-auth-icon">
+                    <img src="images/contact-removebg-preview.png" alt="Login/Register">
+                </div>
+                <!-- Dropdown Menu -->
+                <div class="mobile-auth-dropdown" id="mobileAuthDropdown">
+                    <button class="mobile-auth-btn register-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Register</span>
+                    </button>
+                    <a href="login.html" class="mobile-auth-btn login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="courses.html" class="nav-link">Courses</a>
+                <a href="#partners" class="nav-link">Placement Partners</a>
+                <a href="#success-stories" class="nav-link">Success Stories</a>
+                <a href="#footer-contact" class="nav-link">Contact</a>
+
+                <!-- Desktop register/login buttons - WILL BE HIDDEN ON MOBILE -->
+                <div class="nav-auth-buttons">
+                    <button class="apply-now-button">Register</button>
+                    <a href="login.html" class="login-button">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main container for slideshow + panels - SAME ROW -->
+    <div class="main-container">
+        <!-- Slideshow on LEFT (80%) -->
+        <section class="slideshow-section" id="home">
+            <div class="slideshow-container">
+                <!-- Slide 1 -->
+                <div class="slide active">
+                    <img src="../images/neips page 1.jpg" alt="NEIPS Campus">
+                </div>
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <img src="../images/neips page 2.jpg" alt="NEIPS Students">
+                </div>
+            </div>
+        </section>
+
+        <!-- Panels on RIGHT (25%) -->
+        <div class="panels-container">
+            <!-- Important Links Panel -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Important Links</h2>
+                </div>
+
+                <div class="scrollable-area">
+                    <div class="important-links">
+                        <!-- Important Links Panel - FIXED PDF LINKS -->
+                        <div class="scroll-content">
+                            <!-- 4 Important Links -->
+                            <div class="link-item">
+                                <a href="https://www.neips.in/index.html#apply" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">Online Application Training under NeIPS. Click here to
+                                        Apply</span>
+                                </a>
+                            </div>
+                            <div class="link-item">
+                                <a href="images/list of trade.xlsx" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">List of Trades (xlsx)</span>
+                                </a>
+                            </div>
+                            <div class="link-item">
+                                <a href="images/neips documents.pdf" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">Admission & Accommodation Guidelines (PDF)</span>
+                                </a>
+                            </div>
+                            <div class="link-item">
+                                <a href="https://www.neips.in/index.html#apply" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">Online Application Training under NeIPS. Click here to
+                                        Apply</span>
+                                </a>
+                            </div>
+                            <div class="link-item">
+                                <a href="images/list of trade.xlsx" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">List of Trades (xlsx)</span>
+                                </a>
+                            </div>
+                            <div class="link-item">
+                                <a href="images/neips documents.pdf" target="_blank" class="link-content">
+                                    <i class="fas fa-external-link-alt link-icon"></i>
+                                    <span class="link-text">Admission & Accommodation Guidelines (PDF)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="view-more-btn">
+                    <button id="viewMoreLinksBtn">View More</button>
+                </div>
+            </div>
+
+            <!-- News Panel -->
+            <div class="right-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">NeIPS News & Media</h2>
+                </div>
+
+                <div class="scrollable-area">
+                    <div class="news-container">
+                        <div class="scroll-content">
+                            <!-- 6 Original News Items -->
+                            <div class="news-item">
+                                <a href="https://youtu.be/2M5mZV7jKX8?si=Ihw5bMHPE8fuEjTm" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Certificate Distribution at NeIPS,Nongpoh</span>
+                                </a>
+                            </div>
+                            <div class="news-item">
+                                <a href="https://youtu.be/xp2k58-RiOw?si=2gnvZ2KX-AQdrs0y" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Self-employed Certificate Distribution at
+                                        NeIPS,Nongstoin</span>
+                                </a>
+                            </div>
+                            <div class="news-item">
+                                <a href="https://youtu.be/VaGHqEgEkfs?si=TVFP7fVUyKKUmTlw" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Tool distribution by NeIPS to the youth in East Khasi
+                                        Hills</span>
+                                </a>
+                            </div>
+                            <div class="news-item">
+                                <a href="https://www.facebook.com/neips.in" target="_blank" class="news-link">
+                                    <i class="fab fa-facebook news-icon"></i>
+                                    <span class="news-title">RYNGKAT KI THUNGKAM, PYNKUP BUROM KA NEIPS</span>
+                                </a>
+                            </div>
+                            <div class="news-item">
+                                <a href="https://www.instagram.com/p/B5X0689AMZz/?igsh=MW0yMjJwa2FpNjVvNA=="
+                                    target="_blank" class="news-link">
+                                    <i class="fab fa-instagram news-icon"></i>
+                                    <span class="news-title">Palat 2000 ngut ki la ioh jingmyntoi naduh u snem
+                                        2014</span>
+                                </a>
+                            </div>
+                            <div class="news-item">
+                                <a href="https://youtu.be/zNwmuyXF9cM?si=djPxS7957CL1fzOA" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Palat 120 Ngut Kiba Pyndep Shah Hikai Shna Almari Bad Kiwei
+                                        Ki Kam | Sam Syrnod Ka NeIPS Ha Jowai</span>
+                                </a>
+                            </div>
+
+                            <!-- DUPLICATE News Items for seamless loop -->
+                            <div class="news-item duplicate-item">
+                                <a href="https://youtu.be/2M5mZV7jKX8?si=Ihw5bMHPE8fuEjTm" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Certificate Distribution at NeIPS,Nongpoh</span>
+                                </a>
+                            </div>
+                            <div class="news-item duplicate-item">
+                                <a href="https://youtu.be/xp2k58-RiOw?si=2gnvZ2KX-AQdrs0y" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Self-employed Certificate Distribution at
+                                        NeIPS,Nongstoin</span>
+                                </a>
+                            </div>
+                            <div class="news-item duplicate-item">
+                                <a href="https://youtu.be/VaGHqEgEkfs?si=TVFP7fVUyKKUmTlw" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Tool distribution by NeIPS to the youth in East Khasi
+                                        Hills</span>
+                                </a>
+                            </div>
+                            <div class="news-item duplicate-item">
+                                <a href="https://www.facebook.com/neips.in" target="_blank" class="news-link">
+                                    <i class="fab fa-facebook news-icon"></i>
+                                    <span class="news-title">RYNGKAT KI THUNGKAM, PYNKUP BUROM KA NEIPS</span>
+                                </a>
+                            </div>
+                            <div class="news-item duplicate-item">
+                                <a href="https://www.instagram.com/p/B5X0689AMZz/?igsh=MW0yMjJwa2FpNjVvNA=="
+                                    target="_blank" class="news-link">
+                                    <i class="fab fa-instagram news-icon"></i>
+                                    <span class="news-title">Palat 2000 ngut ki la ioh jingmyntoi naduh u snem
+                                        2014</span>
+                                </a>
+                            </div>
+                            <div class="news-item duplicate-item">
+                                <a href="https://youtu.be/zNwmuyXF9cM?si=djPxS7957CL1fzOA" target="_blank"
+                                    class="news-link">
+                                    <i class="fab fa-youtube news-icon"></i>
+                                    <span class="news-title">Palat 120 Ngut Kiba Pyndep Shah Hikai Shna Almari Bad Kiwei
+                                        Ki Kam | Sam Syrnod Ka NeIPS Ha Jowai</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="view-more-btn">
+                    <button id="viewMoreNewsBtn">View More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deadline Marquee Section -->
+    <section class="deadline-marquee-section">
+        <div class="marquee-container">
+
+            <div class="marquee-content">
+                <div class="marquee-track">
+                    <!-- Marquee items - will scroll right to left -->
+                    <div class="marquee-item" data-district="NeIPS West Khasi Hills" data-trade="Fashion Designing">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ West Khasi Hills: Fashion Designing - Last date: 25th March
+                                2025</span>
+                        </a>
+                    </div>
+                    <div class="marquee-item" data-district="NeIPS East Khasi Hills" data-trade="Commis Chef">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ East Khasi Hills: Commis Chef - Last date: 28th March
+                                2025</span>
+                        </a>
+                    </div>
+                    <div class="marquee-item" data-district="NeIPS West Jaintia Hills" data-trade="Mobile Repairing">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ West Jaintia Hills: Mobile Repairing - Last date: 30th March
+                                2025</span>
+                        </a>
+                    </div>
+                    <div class="marquee-item" data-district="NeIPS Ri Bhoi" data-trade="Beauty & Spa">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ Ri Bhoi: Beauty & Spa - Last date: 1st April 2025</span>
+                        </a>
+                    </div>
+                    <div class="marquee-item" data-district="NeIPS West Garo Hills" data-trade="Craft Baking">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ West Garo Hills: Craft Baking - Last date: 3rd April
+                                2025</span>
+                        </a>
+                    </div>
+                    <div class="marquee-item" data-district="NeIPS South Garo Hills" data-trade="Food & Beverages">
+                        <a href="#registrationForm" class="marquee-link">
+                            <span class="deadline-text">⏰ South Garo Hills: Food & Beverages - Last date: 5th April
+                                2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Registration Section -->
+    <section class="apply-section" id="contact">
+        <div class="apply-container">
+            <div class="apply-heading">
+                <h2>Start Your Journey With NeIPS</h2>
+                <p>Join our institute and unlock your potential with industry-relevant courses and expert
+                    guidance.</p>
+            </div>
+
+            <div class="apply-content-wrapper">
+                <div class="image-section">
+                    <div class="apply-image">
+                        <img src="../images/IMG-20251007-WA0015.jpg" alt="NEIPS Institute" class="institute-img">
+                    </div>
+                    <div class="image-text-content">
+                        <h3 class="institute-title">NeIPS INSTITUTE</h3>
+                        <p class="institute-tagline">The Northeast Institute of Professional Studies (NeIPS)
+                            is a
+                            leading non-governmental organization (NGO) committed to transforming lives
+                            through skill
+                            development, livelihood creation, and community empowerment in the Northeastern
+                            region of
+                            India.</p>
+                    </div>
+                </div>
+
+                <div class="apply-content">
+                    <form class="apply-form" id="registrationForm">
+                        <h3>Registration Form</h3>
+                        <div class="form-group">
+                            <label for="apply-name">Full Name *</label>
+                            <input type="text" id="apply-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-email">Email Address *</label>
+                            <input type="email" id="apply-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-phone">Phone Number *</label>
+                            <input type="tel" id="apply-phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-dob">Date of Birth *</label>
+                            <input type="date" id="apply-dob" name="dob" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apply-address">Office *</label>
+                            <select id="apply-address" name="address" required>
+                                <option value="">Select District</option>
+                                <option value="NeIPS West Khasi Hills">NeIPS West Khasi Hills</option>
+                                <option value="NeIPS East Khasi Hills">NeIPS East Khasi Hills</option>
+                                <option value="NeIPS West Jaintia Hills">NeIPS West Jaintia Hills</option>
+                                <option value="NeIPS Eastern West Khasi Hills">NeIPS Eastern West Khasi Hills</option>
+                                <option value="NeIPS Ri Bhoi">NeIPS Ri Bhoi</option>
+                                <option value="NeIPS West Garo Hills">NeIPS West Garo Hills</option>
+                                <option value="NeIPS South West Khasi Hills">NeIPS South West Khasi Hills</option>
+                                <option value="NeIPS South Garo Hills">NeIPS South Garo Hills</option>
+                                <option value="NeIPS East Jaintia Hills">NeIPS East Jaintia Hills</option>
+                                <option value="NeIPS South West Garo Hills">NeIPS South West Garo Hills</option>
+                                <option value="NeIPS East Garo Hills">NeIPS East Garo Hills</option>
+                                <option value="NeIPS North Garo Hills">NeIPS North Garo Hills</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-trade">Select Trade *</label>
+                            <select id="apply-trade" name="trade" required>
+                                <option value="">Choose a trade</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-photo">
+                                <i class="fas fa-camera"></i>
+                                Choose Passport Photo
+                            </label>
+                            <input type="file" id="student-photo" name="photo" accept="image/*" required>
+                            <small class="photo-guide">Upload recent passport photo (2x2 inches, white
+                                background)</small>
+                            <div id="photo-preview" class="photo-preview">
+                                <div class="photo-placeholder">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REGISTER TYPE MODAL -->
+    <div class="modal-overlay" id="registerTypeModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>Register As</h2>
+                <button class="close-btn" onclick="closeRegisterModal()">×</button>
+            </div>
+
+            <div class="register-options">
+                <div class="register-card" onclick="goStudent()">
+                    <h3>Student / Trainees</h3>
+                    <p>Apply for vocational training programs</p>
+                </div>
+
+                <div class="register-card" onclick="openStaffModal()">
+                    <h3>Staff</h3>
+                    <p>Mobilizer, Trainer, Partner, Centre etc.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="staffRoleModal">
+        <div class="modal-box large">
+            <div class="modal-header">
+                <h2>Register As</h2>
+                <button class="close-btn" onclick="closeStaffModal()">×</button>
+            </div>
+
+            <div class="staff-grid">
+
+                <div class="staff-card" onclick="goStaff('office staff')">Office Staff</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placement Partners Section with Videos -->
+    <section class="placement-partners" id="partners">
+        <div class="video-slideshow-container">
+            <h3>Our Placement Partners</h3>
+
+            <div class="video-slideshow">
+                <div class="video-slides-container">
+                    <!-- Partner Video 1 -->
+                    <div class="video-slide active">
+                        <video poster="images/partner1-poster.jpg">
+                            <source src="images/placemnt meghalaya.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <!-- Partner Video 2 -->
+                    <div class="video-slide">
+                        <video poster="images/partner2-poster.jpg">
+                            <source src="images/placment from outside.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remove all indicators and controls from HTML -->
+        </div>
+    </section>
+    <!-- Success Stories Section -->
+    <section class="success-stories-section" id="success-stories">
+        <div class="success-stories-container">
+            <h2>Success Stories</h2>
+            <p class="success-stories-intro">Hear from our students who have transformed their lives through
+                NeIPS
+                training programs</p>
+
+            <div class="success-stories-slideshow">
+                <div class="success-slideshow-wrapper">
+                    <button class="success-slide-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div class="success-slides-container">
+                        <!-- Success Story 1 - Video -->
+                        <div class="success-slide active">
+                            <div class="success-story-content">
+                                <div class="success-media">
+                                    <div class="video-container">
+                                        <video controls class="success-video">
+                                            <source src="images/Commes chefvideo.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="play-overlay">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="success-story-text">
+
+                                    <p class="success-course">Commis Chef Training</p>
+                                    <p class="success-placement">Placed at: Paradise Biryani</p>
+                                    <p class="success-quote">"NeIPS gave me the confidence and skills to
+                                        pursue my
+                                        passion for cooking. Today, I'm working as a chef in a renowned
+                                        restaurant
+                                        chain."</p>
+                                    <div class="success-stats">
+                                        <div class="success-stat">
+                                            <span class="stat-value">2025</span>
+                                            <span class="stat-label">Batch</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Success Story 2 - Photo -->
+                        <div class="success-slide">
+                            <div class="success-story-content">
+                                <div class="success-media">
+                                    <div class="photo-container">
+                                        <img src="images/commis chef photo.jpg" alt="Commis Chef" class="success-photo">
+                                    </div>
+                                </div>
+                                <div class="success-story-text">
+
+                                    <p class="success-course">Commis Chef Training</p>
+                                    <p class="success-placement">Placed at: Paradise Biryani</p>
+                                    <p class="success-quote">"NeIPS gave me the confidence and skills to
+                                        pursue my
+                                        passion for cooking. Today, I'm working as a chef in a renowned
+                                        restaurant
+                                        chain."</p>
+                                    <div class="success-stats">
+                                        <div class="success-stat">
+                                            <span class="stat-value">2025</span>
+                                            <span class="stat-label">Batch</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Success Story 3 - Video -->
+                        <div class="success-slide">
+                            <div class="success-story-content">
+                                <div class="success-media">
+                                    <div class="video-container">
+                                        <video controls class="success-video">
+                                            <source src="images/f&bvideo.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="play-overlay">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="success-story-text">
+
+                                    <p class="success-course">Food & Beverages Services</p>
+                                    <p class="success-placement">Placed at: Paradise Biryani</p>
+                                    <p class="success-quote">"The Food & Beverages course at NeIPS opened up
+                                        incredible opportunities in the hospitality industry. I went from
+                                        having no
+                                        experience to becoming a skilled service professional at one of the
+                                        most
+                                        renowned restaurant chains. The hands-on training and industry
+                                        exposure
+                                        prepared me perfectly for my career."</p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Success Story 4 - Photo -->
+                        <div class="success-slide">
+                            <div class="success-story-content">
+                                <div class="success-media">
+                                    <div class="photo-container">
+                                        <img src="images/F&B.jpg" alt="F&B Services" class="success-photo">
+                                    </div>
+                                </div>
+                                <div class="success-story-text">
+
+                                    <p class="success-course">Food & Beverages Services</p>
+                                    <p class="success-placement">Placed at: Paradise Biryani</p>
+                                    <p class="success-quote">"The Food & Beverages course at NeIPS opened up
+                                        incredible opportunities in the hospitality industry. I went from
+                                        having no
+                                        experience to becoming a skilled service professional at one of the
+                                        most
+                                        renowned restaurant chains. The hands-on training and industry
+                                        exposure
+                                        prepared me perfectly for my career."</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="success-slide-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="success-slide-indicators">
+                    <span class="success-indicator active"></span>
+                    <span class="success-indicator"></span>
+                    <span class="success-indicator"></span>
+                    <span class="success-indicator"></span>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- <div class="career-cta">
+            <h3>Ready to Start Your Career?</h3>
+            <p>Join NeIPS today and get placed in your dream job with our comprehensive training and placement
+                support.</p>
+            <button class="cta-button" onclick="document.querySelector('.apply-now-button').click()">
+                Start Your Journey Now
+            </button>
+        </div> -->
+
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-section" id="footer-contact">
+        <div class="footer-container">
+            <!-- Main Footer Content -->
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <img src="../images/NeIPS-logo.jpg" alt="NeIPS Logo" class="footer-logo-img">
+                        <div class="footer-logo-text">
+                            <h3>NeIPS</h3>
+
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Empowering youth with industry-relevant vocational training and skill development
+                        programs for sustainable employment and entrepreneurship.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/neips.in" class="social-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/neips_skills?igsh=MXA3bnhkbmJpZGxnYw==" class="social-link"
+                            aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="http://www.youtube.com/@neipsskills6573" class="social-link" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="courses.html">Courses</a></li>
+                            <li><a href="partners.html">Partners</a></li>
+                            <li><a href="success-stories.html">Success Stories</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Courses</h4>
+                        <ul>
+                            <li><a href="courses.html">Fashion Designing</a></li>
+                            <li><a href="courses.html">Craft Baking</a></li>
+                            <li><a href="courses.html">Commis Chef</a></li>
+                            <li><a href="courses.html">Mobile Repairing</a></li>
+                            <li><a href="courses.html">Beauty & Spa</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Contact Info</h4>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Nongstoin, West Khasi Hills<br>Meghalaya, India</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9330410244/03654796297</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>neips.infodesk@gmail.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Mon - Fri: 9:00 AM - 5:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="copyright">
+                        <p>&copy; 2025 NeIPS Nongstoin. All rights reserved.</p>
+                    </div>
+
+                    <div class="legal-links">
+                        <a href="#" class="legal-link">Disclaimer</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Terms of Use</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // EMERGENCY OVERRIDE - ensures trades load no matter what
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🚨 Emergency override active');
+
+            // Wait a bit then setup our own listener
+            setTimeout(function () {
+                const districtSelect = document.getElementById('apply-address');
+                if (!districtSelect) return;
+
+                // Remove any existing listeners
+                const newSelect = districtSelect.cloneNode(true);
+                districtSelect.parentNode.replaceChild(newSelect, districtSelect);
+
+                // Add our listener
+                document.getElementById('apply-address').addEventListener('change', function (e) {
+                    console.log('🚨 Emergency listener fired for:', this.value);
+                    loadTradesSimple(this.value);
+                });
+
+                console.log('🚨 Emergency listener installed');
+            }, 1000);
+        });
+    </script>
+    <!-- Embed ChatBot Widget -->
+    <script>
+        // Load ChatBot widget
+        function loadChatBotWidget() {
+            // Add CSS
+            const css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = '/chatbot/chatbot.css';
+            document.head.appendChild(css);
+
+            // Add Font Awesome
+            const fa = document.createElement('link');
+            fa.rel = 'stylesheet';
+            fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+            document.head.appendChild(fa);
+
+            // Create container
+            const container = document.createElement('div');
+            container.id = 'chatbot-widget-container';
+            document.body.appendChild(container);
+
+            // Load widget HTML
+            fetch('/chatbot/chatbot.html')
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html;
+
+                    // Load the JavaScript
+                    const script = document.createElement('script');
+                    script.src = '/chatbot/chatbot.js';
+                    document.body.appendChild(script);
+                })
+                .catch(error => console.error('Error loading ChatBot widget:', error));
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadChatBotWidget);
+    </script>
+
+    <!-- Optional: Direct ChatBot Access -->
+    <script>
+        // Function to embed ChatBot widget directly
+        function embedChatBotWidget() {
+            if (!document.getElementById('neips-chatbot')) {
+                const script = document.createElement('script');
+                script.src = '/chatbot/chatbot.js';
+                script.onload = function () {
+                    // You can also pre-set some configuration
+                    console.log('NEIPS ChatBot ready to help students!');
+                };
+                document.head.appendChild(script);
+            }
+        }
+
+        // Load when page is ready
+        if (document.readyState === 'complete') {
+            embedChatBotWidget();
+        } else {
+            document.addEventListener('DOMContentLoaded', embedChatBotWidget);
+        }
+    </script>
+    <script src="script.js"></script>
+    <script src="form-handler.js"></script>
+    <script src="slideshows.js"></script>
+    <!-- Add these in <head> or before </body> -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <!-- Add this line -->
+    <script src="staff-registration.js"></script>
+    <script>
+        const registerModal = document.getElementById('registerTypeModal');
+        const staffModal = document.getElementById('staffRoleModal');
+
+        document.querySelector('.apply-now-button').onclick = () => {
+            registerModal.style.display = 'flex';
+        };
+
+        function closeRegisterModal() {
+            registerModal.style.display = 'none';
+        }
+
+        function openStaffModal() {
+            registerModal.style.display = 'none';
+            staffModal.style.display = 'flex';
+        }
+
+        function closeStaffModal() {
+            staffModal.style.display = 'none';
+        }
+
+        function goStudent() {
+            closeRegisterModal();
+            document.getElementById('registrationForm')
+                .scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function goStaff(role) {
+            // Go to staff registration page with role parameter
+            window.location.href = `staff-register.html?role=${role}`;
+        }
+    </script>
+    <!-- Add to head section -->
+
+</body>
+
+</html>

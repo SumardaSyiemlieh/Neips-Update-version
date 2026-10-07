@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - NEIPS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+   
+    <link rel="stylesheet" href="css/task.css">
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add this in the head section -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+    <div class="attendance-container">
+
+        <!-- HEADER -->
+        <header class="attendance-header">
+            <div class="header-content">
+                <div class="logo-title">
+                    <img src="../images/NeIPS-logo.jpg" class="logo" />
+                    <h1>NeIPS Admin Portal</h1>
+                </div>
+
+                <div class="header-controls">
+                    <div class="admin-info">
+                        <span>Welcome Michael</span>
+                        <small>Managing Director</small>
+                    </div>
+                    <button class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <div class="main-layout">
+
+            <!-- SIDEBAR -->
+            <nav class="sidebar">
+                <div class="sidebar-menu">
+
+                    <!-- MAIN SECTION -->
+                    <div class="menu-section">
+                        <h3>MAIN</h3>
+                        <a href="#dashboard" class="menu-item active" data-page="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </div>
+
+                    <!-- REPORTS DROPDOWN -->
+                    <div class="submenu-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+
+                    <div class="submenu">
+                        <a href="#attendance-report" class="submenu-item" data-page="attendance">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Attendance Report</span>
+                        </a>
+                        <a href="#Daily-Attendance" class="submenu-item" data-page="Daily">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Daily Attendance</span>
+                        </a>
+                        <a href="#Monthly-attendance" class="submenu-item" data-page="monthly">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Monthly Attendance</span>
+                        </a>
+                    </div>
+
+                    <!-- MORE REPORTS -->
+                    <a href="#absent-report" class="menu-item" data-page="absent">
+                        <i class="fas fa-user-times"></i>
+                        <span>Absent Report</span>
+                    </a>
+                    <a href="#late-report" class="menu-item" data-page="late">
+                        <i class="fas fa-clock"></i>
+                        <span>Late Report</span>
+                    </a>
+                    <a href="#working-hours" class="menu-item" data-page="working">
+                        <i class="fas fa-business-time"></i>
+                        <span>Working Hours Report</span>
+                    </a>
+                    <a href="#leave-report" class="menu-item" data-page="leave">
+                        <i class="fas fa-calendar-minus"></i>
+                        <span>Leave Report</span>
+                    </a>
+
+                    <!-- EMPLOYEE SECTION -->
+                    <div class="menu-section">
+                        <h3>EMPLOYEES</h3>
+                        <a href="#employee-list" class="menu-item" data-page="employees">
+                            <i class="fas fa-users"></i>
+                            <span>Employee List</span>
+                        </a>
+                        <a href="#Batch Approval" class="menu-item" data-page="batch approval">
+                            <i class="fas fa-file"></i>
+                            <span>Batch Approval</span>
+                        </a>
+                        <a href="#Task Management" class="menu-item" data-page="task management">
+                            <i class="fas fa-shield"></i>
+                            <span>Task Management</span>
+                        </a>
+                    </div>
+
+                </div>
+            </nav>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="main-content">
+                <!-- Dashboard Content (Default) -->
+                <div id="dashboard-content" class="page-content active">
+                    <div class="page-header">
+                        <h2>Dashboard</h2>
+                        <p>Welcome back! Here is today's overview.</p>
+                    </div>
+
+                    <!-- DASHBOARD TOP CARDS -->
+                    <section class="dashboard-summary">
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <div class="icon blue"><i class="fas fa-users"></i></div>
+                                <div class="content">
+                                    <h2>0</h2>
+                                    <p>Employees</p>
+                                </div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="icon orange"><i class="fas fa-user-check"></i></div>
+                                <div class="content">
+                                    <h2>0</h2>
+                                    <p>Present</p>
+                                </div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="icon green"><i class="fas fa-thumbs-down"></i></div>
+                                <div class="content">
+                                    <h2>0</h2>
+                                    <p>Absent</p>
+                                </div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="icon cyan"><i class="fas fa-clock"></i></div>
+                                <div class="content">
+                                    <h2>0</h2>
+                                    <p>Late Corners</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- DONUT CHARTS -->
+                    <section class="chart-section">
+                        <div class="chart-card">
+                            <h3>Absentees – last 7 days</h3>
+                            <canvas id="chart7days"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>Absentees – by Month</h3>
+                            <canvas id="chartByMonth"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>Late Corners – Last 7 days</h3>
+                            <canvas id="chartLate"></canvas>
+                        </div>
+                    </section>
+
+                    <!-- FOOTER -->
+                    <footer class="attendance-footer">
+                        <p>© 2021 NEIPS Admin Portal | Admin Portal System | Generated on 01-Jul-2021 16:01:24</p>
+                    </footer>
+                </div>
+
+                <!-- Monthly Attendance Content -->
+                <div id="monthly-content" class="page-content">
+                    <div class="page-header">
+                        <h2>Monthly Attendance Report</h2>
+                        <p>View and generate monthly attendance reports for all staff</p>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="filter-month">Month:</label>
+                                <select id="filter-month">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="filter-year">Year:</label>
+                                <select id="filter-year">
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <button class="btn-filter" id="loadMonthlyData">
+                                    <i class="fas fa-search"></i> Load Report
+                                </button>
+                                <button class="btn-export" id="downloadMonthlyPDF">
+                                    <i class="fas fa-file-pdf"></i> Download Monthly PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="summary-grid monthly-summary">
+                        <div class="summary-card">
+                            <div class="icon blue"><i class="fas fa-users"></i></div>
+                            <div class="content">
+                                <h2 id="totalStaff">0</h2>
+                                <p>Total Staff</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon green"><i class="fas fa-user-check"></i></div>
+                            <div class="content">
+                                <h2 id="presentDays">0</h2>
+                                <p>Present Days</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon orange"><i class="fas fa-user-times"></i></div>
+                            <div class="content">
+                                <h2 id="absentDays">0</h2>
+                                <p>Absent Days</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="icon red"><i class="fas fa-clock"></i></div>
+                            <div class="content">
+                                <h2 id="lateDays">0</h2>
+                                <p>Late Days</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Attendance Table -->
+                    <div class="table-section">
+                        <div class="table-header">
+                            <h3>Monthly Attendance Details</h3>
+                            <div class="table-actions">
+                                <input type="text" id="searchMonthly" placeholder="Search staff..."
+                                    class="search-input">
+                                <button class="btn-export-small" id="exportMonthlyCSV">
+                                    <i class="fas fa-file-excel"></i> Export CSV
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="attendance-table" id="monthlyAttendanceTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Staff ID</th>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Present</th>
+                                        <th>Absent</th>
+                                        <th>Late</th>
+                                        <th>Leave</th>
+                                        <th>Working Hours</th>
+                                        <th>Attendance %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monthlyTableBody">
+                                    <!-- Data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <div class="table-info">
+                                Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> staff
+                            </div>
+                            <div class="pagination">
+                                <button class="btn-prev" disabled><i class="fas fa-chevron-left"></i></button>
+                                <span class="page-info">Page 1 of 1</span>
+                                <button class="btn-next" disabled><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FOOTER for Monthly page -->
+                    <footer class="attendance-footer">
+                        <p>© 2021 NEIPS Admin Portal | Admin Portal System | Generated on <span id="currentDate"></span>
+                        </p>
+                    </footer>
+                </div>
+
+                <!-- Add other page contents here as needed -->
+                <div id="attendance-content" class="page-content">
+                    <!-- Attendance Report Content -->
+                    <div class="page-header">
+                        <h2>Attendance Report</h2>
+                        <p>Detailed attendance reports</p>
+                    </div>
+                    <!-- Add your attendance report content here -->
+                </div>
+
+                <div id="Daily-content" class="page-content">
+                    <!-- Daily Attendance Content -->
+                    <div class="page-header">
+                        <h2>Daily Attendance</h2>
+                        <p>Daily attendance overview</p>
+                    </div>
+                    <!-- Add your daily attendance content here -->
+                </div>
+
+                <!-- Staff List Modal for PDF Generation -->
+                <div id="staffListModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Select Staff for PDF Report</h3>
+                            <span class="close-modal">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="staff-list-container">
+                                <div class="staff-list-actions">
+                                    <input type="text" id="searchStaffList" placeholder="Search staff..."
+                                        class="search-input">
+                                    <button class="btn-select-all" id="selectAllStaff">
+                                        <i class="fas fa-check-square"></i> Select All
+                                    </button>
+                                    <button class="btn-deselect-all" id="deselectAllStaff">
+                                        <i class="fas fa-square"></i> Deselect All
+                                    </button>
+                                </div>
+                                <div class="staff-list-table">
+                                    <table class="staff-table">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" id="selectAllCheckbox"></th>
+                                                <th>Staff ID</th>
+                                                <th>Name</th>
+                                                <th>Role</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="staffListBody">
+                                            <!-- Staff list will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-cancel close-modal">Cancel</button>
+                            <button class="btn-generate" id="generateSelectedPDF">
+                                <i class="fas fa-file-pdf"></i> Generate PDF for Selected Staff
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+     
+        <script>
+            // Set current date in footer
+            document.addEventListener('DOMContentLoaded', function () {
+                const currentDate = new Date().toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const dateElement = document.getElementById('currentDate');
+                if (dateElement) {
+                    dateElement.textContent = currentDate;
+                }
+            });
+        </script>
+
+    </div>
+    <script src="admin.js"></script>
+</body>
+
+</html>

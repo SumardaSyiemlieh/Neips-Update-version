@@ -1,0 +1,958 @@
+/* ===============================
+   MODERN STUDENT DASHBOARD THEME
+   (HTML UNCHANGED)
+================================ */
+
+:root {
+    --bg-main: #f6f7fb;
+    --card-bg: #ffffff;
+
+    --primary: #4f6df5;
+    --primary-dark: #3b54d6;
+    --primary-light: #eef1ff;
+
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+
+    --border-light: #e5e7eb;
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ================= HEADER ================= */
+.student-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-light);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0; /* Allows text truncation */
+}
+
+.logo {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+}
+
+.logo-section h1 {
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#studentName {
+    font-weight: 600;
+    font-size: 14px;
+    display: none; /* Hide on mobile, show on desktop */
+}
+
+.btn-logout {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.btn-logout:hover {
+    background: var(--primary-dark);
+}
+
+/* ================= MAIN ================= */
+.student-main {
+    padding: 20px 16px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+}
+
+/* ================= CARDS ================= */
+.welcome-card,
+.attendance-section,
+.option-card,
+.attendance-log,
+.webcam-container,
+.qr-scanner-container,
+.otp-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: none;
+}
+
+/* ================= WELCOME ================= */
+.welcome-section {
+    margin-bottom: 20px;
+}
+
+.welcome-card {
+    padding: 20px;
+    text-align: center;
+}
+
+.welcome-card h2 {
+    font-size: 20px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.welcome-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* ================= ATTENDANCE ================= */
+.attendance-section {
+    padding: 20px;
+}
+
+.attendance-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Status Bar */
+.attendance-status {
+    background: var(--primary-light);
+    padding: 16px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.status-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1 }
+    50% { opacity: .4 }
+    100% { opacity: 1 }
+}
+
+#statusText {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.time-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ================= OPTIONS ================= */
+.attendance-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.option-card {
+    padding: 20px;
+    transition: .3s;
+    text-align: center;
+}
+
+.option-card:hover {
+    transform: translateY(-4px);
+}
+
+.option-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 12px auto;
+}
+
+.option-card h4 {
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.option-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.btn-attendance {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-attendance:hover {
+    background: var(--primary-dark);
+}
+
+/* ================= TABLE ================= */
+.attendance-log {
+    padding: 20px;
+    overflow: hidden;
+}
+
+.attendance-log h4 {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.log-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    max-width: 100%;
+    /* Prevent container from expanding the page */
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* FIX: Remove min-width from table to prevent page expansion */
+#attendanceTable {
+    width: 100%;
+    border-collapse: collapse;
+    /* Removed min-width to prevent page expansion */
+    table-layout: fixed; /* Helps with consistent column widths */
+}
+
+#attendanceTable th {
+    background: #f9fafb;
+    text-align: left;
+    padding: 12px 8px; /* Reduced padding for mobile */
+    font-size: 13px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Set specific column widths for better mobile display */
+#attendanceTable th:nth-child(1) { width: 25%; } /* Date */
+#attendanceTable th:nth-child(2) { width: 20%; } /* Check In */
+#attendanceTable th:nth-child(3) { width: 20%; } /* Check Out */
+#attendanceTable th:nth-child(4) { width: 15%; } /* Method */
+#attendanceTable th:nth-child(5) { width: 20%; } /* Status */
+
+#attendanceTable td {
+    padding: 12px 8px; /* Reduced padding for mobile */
+    border-bottom: 1px solid var(--border-light);
+    font-size: 13px; /* Smaller font for mobile */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#attendanceTable tr:hover {
+    background: #f9fafb;
+}
+
+.present { 
+    color: var(--success); 
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(34, 197, 94, 0.1);
+    display: inline-block;
+}
+.absent { 
+    color: #ef4444; 
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(239, 68, 68, 0.1);
+    display: inline-block;
+}
+
+.loading-text {
+    text-align: center;
+    padding: 30px !important;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Mobile-optimized table styles */
+@media (max-width: 767px) {
+    #attendanceTable {
+        font-size: 12px;
+    }
+    
+    #attendanceTable th,
+    #attendanceTable td {
+        padding: 10px 6px;
+        font-size: 12px;
+    }
+    
+    /* Make columns a bit more flexible on mobile */
+    #attendanceTable th:nth-child(1) { width: 22%; }
+    #attendanceTable th:nth-child(2) { width: 18%; }
+    #attendanceTable th:nth-child(3) { width: 18%; }
+    #attendanceTable th:nth-child(4) { width: 20%; }
+    #attendanceTable th:nth-child(5) { width: 22%; }
+    
+    .present, .absent {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+}
+
+/* ================= MODALS & CONTAINERS ================= */
+.webcam-container,
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+}
+
+.webcam-header,
+.modal-header {
+    padding: 16px;
+    background: var(--card-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.webcam-header h4,
+.modal-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.webcam-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+#webcamVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 30px 20px;
+    text-align: center;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.biometric-icon {
+    margin-bottom: 20px;
+}
+
+.modal-body p {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.webcam-controls,
+.modal-controls {
+    padding: 16px;
+    background: var(--card-bg);
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid var(--border-light);
+}
+
+.btn-primary,
+.btn-success {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    color: var(--primary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    flex: 1;
+}
+
+.scan-result {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.scan-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.scan-error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* ================= FOOTER ================= */
+.student-footer {
+    margin-top: 30px;
+    padding: 20px 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    background: transparent;
+    border-top: 1px solid var(--border-light);
+}
+
+.student-footer p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* ================= DARK MODE ================= */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main: #0f172a;
+        --card-bg: #111827;
+
+        --primary: #60a5fa;
+        --primary-dark: #3b82f6;
+        --primary-light: #1e293b;
+
+        --text-main: #e5e7eb;
+        --text-muted: #9ca3af;
+
+        --border-light: #1f2937;
+    }
+
+    body {
+        background: var(--bg-main);
+    }
+
+    .student-header,
+    body::before {
+        background: #020617;
+        border-color: var(--border-light);
+    }
+
+    #attendanceTable th {
+        background: #020617;
+    }
+}
+
+/* ================= RESPONSIVE BREAKPOINTS ================= */
+
+/* Tablet and larger phones (min-width: 576px) */
+@media (min-width: 576px) {
+    .header-container {
+        padding: 0 20px;
+    }
+    
+    .student-main {
+        padding: 25px 20px;
+    }
+    
+    .welcome-card {
+        padding: 25px;
+    }
+    
+    .attendance-section {
+        padding: 25px;
+    }
+    
+    .attendance-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #studentName {
+        display: inline; /* Show student name on tablet+ */
+    }
+    
+    .logo-section h1 {
+        font-size: 18px;
+    }
+    
+    #attendanceTable th,
+    #attendanceTable td {
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+    
+    .present, .absent {
+        font-size: 13px;
+        padding: 4px 8px;
+    }
+}
+
+/* Desktop (min-width: 768px) */
+@media (min-width: 768px) {
+    .header-container {
+        padding: 0 30px;
+    }
+    
+    .student-main {
+        padding: 30px;
+    }
+    
+    .welcome-card {
+        padding: 30px;
+        text-align: left;
+    }
+    
+    .welcome-card h2 {
+        font-size: 24px;
+    }
+    
+    .attendance-section {
+        padding: 30px;
+    }
+    
+    .attendance-section h3 {
+        font-size: 20px;
+    }
+    
+    .attendance-status {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .status-indicator {
+        justify-content: flex-start;
+    }
+    
+    .time-info {
+        width: auto;
+        gap: 20px;
+    }
+    
+    .time-info p {
+        font-size: 14px;
+    }
+    
+    .option-card {
+        text-align: left;
+    }
+    
+    .option-icon {
+        margin: 0 0 15px 0;
+    }
+    
+    .btn-logout {
+        padding: 10px 20px;
+    }
+    
+    .student-footer {
+        font-size: 13px;
+    }
+    
+    /* Adjust table column widths for desktop */
+    #attendanceTable th:nth-child(1) { width: 20%; }
+    #attendanceTable th:nth-child(2) { width: 15%; }
+    #attendanceTable th:nth-child(3) { width: 15%; }
+    #attendanceTable th:nth-child(4) { width: 20%; }
+    #attendanceTable th:nth-child(5) { width: 30%; }
+}
+
+/* Large Desktop (min-width: 992px) */
+@media (min-width: 992px) {
+    .logo-section h1 {
+        font-size: 22px;
+    }
+    
+    .attendance-options {
+        gap: 25px;
+    }
+    
+    .option-card {
+        padding: 24px;
+    }
+    
+    .option-card h4 {
+        font-size: 17px;
+    }
+    
+    .option-card p {
+        font-size: 14px;
+    }
+}
+
+/* Extra large screens (min-width: 1200px) */
+@media (min-width: 1200px) {
+    .container {
+        padding: 0;
+    }
+}
+
+/* ================= UTILITY CLASSES FOR MOBILE ================= */
+/* Hide elements on mobile */
+.mobile-only {
+    display: block;
+}
+
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .mobile-only {
+        display: none;
+    }
+    
+    .desktop-only {
+        display: block;
+    }
+}
+
+/* Safe area handling for notched phones */
+@supports (padding: max(0px)) {
+    .student-header,
+    .student-footer,
+    .student-main {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+    
+    .student-header {
+        padding-top: max(12px, env(safe-area-inset-top));
+    }
+    
+    .student-footer {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Prevent text size adjustment on mobile */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Improve tap targets on mobile */
+button,
+.btn-attendance,
+.btn-logout {
+    touch-action: manipulation;
+    min-height: 44px; /* Minimum touch target size */
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Fix for iOS bounce effect */
+body {
+    position: relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* IMPORTANT: Add this to prevent horizontal scroll on the entire page */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+/* ==================== AUTHENTICATION STYLES ==================== */
+
+.webcam-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-light);
+}
+
+.webcam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.webcam-header h4 {
+    margin: 0;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.webcam-preview {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+#webcamVideo {
+    width: 100%;
+    height: auto;
+    display: block;
+    transform: scaleX(-1); /* Mirror for selfie view */
+}
+
+.webcam-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.scan-result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scan-result .processing {
+    color: var(--primary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scan-result .success {
+    color: #22c55e;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scan-result .error {
+    color: #ef4444;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Biometric Modal */
+.modal-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border: 1px solid var(--border-light);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.modal-header h4 {
+    margin: 0;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-body {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.biometric-icon {
+    color: var(--primary);
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.modal-body p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+.modal-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Attendance status indicators */
+.status-checked-in {
+    background: #3b82f6 !important;
+    animation: pulse 2s infinite;
+}
+
+.status-present {
+    background: #22c55e !important;
+}
+
+.status-absent {
+    background: #ef4444 !important;
+}
+
+/* Animation for scanning */
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Status circle animation */
+.status-circle {
+    transition: all 0.3s ease;
+}

@@ -1,0 +1,460 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: 
+        linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+        url("images/NeIPS-logo.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #000;
+}
+
+/* Subtle blur only */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("images/NeIPS-logo.jpg") no-repeat center center;
+    background-size: cover;
+    filter: blur(3px) brightness(0.9); /* Less blur + slightly darker */
+    z-index: -2;
+}
+
+/* White overlay to reduce shine */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6); /* White overlay */
+    z-index: -1;
+}
+
+/* ================= TOP HEADER ================= */
+.navbar {
+    height: 60px;
+    padding: 15px 40px;
+    background: none;
+    box-shadow: none;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+ 
+}
+
+/* Hide big logo in navbar (image has text only) */
+.logo-icon {
+    display: none;
+}
+
+.nav-logo h1 {
+    background: #ff7700;
+    color: #fff;
+    font-size: 23px;
+    padding: 6px 15px;
+    border-radius: 6px;
+    position: absolute;
+    left: 50px;
+    top: 20px;
+}
+
+/* Hide back button */
+.back-to-home {
+    display: none;
+}
+
+/* ================= MAIN PAGE ================= */
+.login-page-section {
+    height: calc(100vh - 60px);
+    /* EXACT single page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 80px;
+    margin-right: 20%;
+}
+
+/* ================= CONTENT BLOCK ================= */
+.login-page-form {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    /* CHANGE TO: 100px to move logo further left */
+    width: 520px;
+}
+
+/* ================= LEFT LOGO ================= */
+.login-page-form::before {
+    content: "";
+    width: 380px;
+    /* LINE 59: Make bigger (change to 200px) */
+    height: 300px;
+    /* LINE 60: Make bigger (change to 200px) */
+    background: url("images/logo.png") no-repeat center/contain;
+    position: absolute;
+    left: -0px;
+    /* LINE 64: Move further left (change to 50px) */
+    top: 200px;
+    z-index: 1;
+}
+
+/* ================= REMOVE HEADER TEXT ================= */
+.login-header {
+    display: none;
+}
+
+/* ================= FORM ================= */
+.login-form {
+    width: 520px;
+}
+
+/* Each row */
+.form-group,
+.login-dob {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    /* LINE 75: Make bigger spacing (change from 14px) */
+}
+
+/* Labels */
+.form-group label,
+.login-dob label {
+    width: 160px;
+    /* LINE 80: Make bigger (change from 140px) */
+    font-size: 16px;
+    /* LINE 81: Make bigger (change from 14px) */
+    font-weight: bold;
+}
+
+.login-form input,
+.login-form select {
+    position: absolute;
+    left: 160px; /* Start after label */
+    width: 500px; /* Change this number to make longer from right */
+    height: 36px;
+    border: 2px solid #000;
+    padding: 6px 10px;
+    font-size: 16px;
+    border-radius: 0;
+    background: #fff;
+    border: 3px solid #000; /* Change this to make border darker and thicker */
+}
+
+/* Each row needs relative positioning */
+.form-group,
+.login-dob {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative; /* ADD THIS */
+    height: 36px; /* ADD THIS - fixed height for each row */
+    
+} 
+
+/* ================= OPTIONS ================= */
+/* ================= OPTIONS ================= */
+/* FORM OPTIONS - Needs its own positioning */
+.form-options {
+    width: 500px; /* Match input width */
+    margin-left: 1px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* ADD THIS */
+    height: 36px; /* ADD THIS - same as other rows */
+    margin-top: 20px; /* ADD THIS - spacing from previous input */
+}
+.remember-me {
+    font-size: 15px;
+    font-weight: bolder;
+    display: flex; /* ADD THIS */
+    align-items: center; /* ADD THIS */
+    gap: 40px; /* ADD THIS - space between text and checkbox */
+}
+
+.remember-me input {
+    width: 18px;
+    height: 18px;
+    order: 2; /* ADD THIS - checkbox on right */
+}
+
+/* ================= LOGIN BUTTON ================= */
+.login-btn {
+    background: #ff7700;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 30px;
+    /* LINE 117: Make bigger (change from 6px 22px) */
+    font-size: 16px;
+    /* LINE 118: Make bigger (change from 14px) */
+    cursor: pointer;
+ 
+    /* LINE 120: Match label width (change from 140px) */
+    height: 40px;
+    /* LINE 121: Add height for bigger button */
+     margin-left: 1px;
+     margin-top: 20px;
+}
+
+/* ================= FOOTER ================= */
+.login-footer {
+    margin-top: 30px;
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.login-footer a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    margin-left: 200px; /* ADD this to create space between "Don't have an account" and "Register here" */
+}
+
+/* ================= MOBILE RESPONSIVE ONLY ================= */
+/* This will ONLY apply on mobile screens (768px and below) */
+@media (max-width: 768px) {
+    /* Scale everything proportionally */
+    html, body {
+        overflow: auto; /* Allow scroll on mobile */
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .navbar {
+        padding: 10px 20px;
+        height: 50px;
+    }
+    
+    .nav-logo h1 {
+        font-size: 16px;
+        padding: 4px 10px;
+        left: 20px;
+        top: 15px;
+        position: fixed;
+    }
+    
+    .login-page-section {
+        display: block;
+        padding: 20px;
+        margin-right: 0;
+        padding-left: 20px;
+        height: auto;
+        min-height: calc(100vh - 50px);
+        padding-top: 70px;
+    }
+    
+    .login-page-form {
+        flex-direction: column;
+        width: 100%;
+        gap: 30px;
+        align-items: center;
+    }
+    
+    .login-page-form::before {
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 150px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    
+    .login-form {
+        width: 100%;
+        max-width: 500px;
+    }
+    
+    .form-group,
+    .login-dob {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        height: auto;
+        position: relative;
+    }
+    
+    .form-group label,
+    .login-dob label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .login-form input,
+    .login-form select {
+        position: relative;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 5px;
+    }
+    
+    .form-options {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        height: auto;
+    }
+    
+    .remember-me {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    
+    .login-btn {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+    
+    .login-footer {
+        margin-left: 0;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .login-footer a {
+        margin-left: 10px;
+        display: inline-block;
+    }
+}
+
+/* Small mobile screens (480px and below) */
+@media (max-width: 480px) {
+    .login-page-form::before {
+        width: 120px;
+        height: 100px;
+    }
+    
+    .login-form input,
+    .login-form select {
+        height: 40px;
+        font-size: 15px;
+    }
+    
+    .login-btn {
+        height: 42px;
+        font-size: 15px;
+    }
+    
+    .form-group label,
+    .login-dob label {
+        font-size: 15px;
+    }
+    
+    .remember-me {
+        font-size: 14px;
+    }
+    
+    .login-footer {
+        font-size: 14px;
+    }
+}
+/* ================= SIMPLE AGREEMENT ================= */
+.simple-agreement {
+    margin: 15px 0 20px 1px;
+    width: 500px;
+}
+
+.agreement-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    position: relative;
+    line-height: 1.4;
+}
+
+.agreement-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.agreement-checkmark {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #8b6914;
+    border-radius: 3px;
+    background-color: #fff;
+    margin-top: 2px;
+}
+
+.agreement-checkbox input:checked ~ .agreement-checkmark {
+    background-color: #8b6914;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-size: 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.agreement-text {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.required-star {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .simple-agreement {
+        width: 100%;
+        max-width: 500px;
+        margin-left: 0;
+    }
+    
+    .agreement-text {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .agreement-text {
+        font-size: 12px;
+    }
+    
+    .agreement-checkmark {
+        width: 14px;
+        height: 14px;
+        margin-top: 1px;
+    }
+}

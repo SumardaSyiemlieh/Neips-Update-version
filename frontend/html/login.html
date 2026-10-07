@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NeIPS Institute</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+        <!-- FIREBASE SCRIPTS (Add these) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Your Firebase Config -->
+    <script src="firebase.config.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">
+                    <img src="images/logo.png" alt="NEIPS Logo" class="logo-image">
+                </div>
+                <div>
+                    <h1>NeIPS</h1>
+
+                </div>
+            </div>
+            <a href="index.html" class="back-to-home">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="login-page-section">
+
+
+        <div class="login-page-form">
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="login-type">Login As </label>
+                    <select id="login-type" name="login_type" required>
+                        <option value="">Select User Type</option>
+                        <option value="student">Student</option>
+                        <option value="staff">Mobilizer</option>
+                        <option value="staff">Trainer</option>
+                        <option value="staff">Center Incharge</option>
+                        <option value="staff">Monitoring head</option>
+                        <option value="staff">Operation Head</option>
+                        <option value="staff">Asst Operation Head</option>
+                        <option value="staff">Registration Manager</option>
+                        <option value="staff">Office Staff</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <!-- In your login form section -->
+                <div class="form-group">
+                    <label for="login-dob">Date of Birth</label>
+                    <div class="dob-input-wrapper">
+                        <input type="text" id="login-dob" name="dob" placeholder="dd-mm-yyyy" maxlength="10"
+                            autocomplete="off" required>
+                        <i class="fas fa-calendar-alt dob-icon"></i>
+                    </div>
+                    <div class="dob-hint">Format: day-month-year (e.g., 15-01-1995)</div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+
+                </div>
+
+                <!-- Simple One-Line Acknowledgement -->
+                <div class="simple-agreement">
+                    <label class="agreement-checkbox">
+                        <input type="checkbox" name="agree_policy" required>
+                        <span class="agreement-checkmark"></span>
+                        <span class="agreement-text">
+                            By proceeding, you acknowledge that unexplained absences may lead to payment deductions,
+                            regular attendance is mandatory, and issues must be reported immediately
+                            to avoid disciplinary action.
+                            <span class="required-star">*</span>
+                        </span>
+                    </label>
+                </div>
+                <button type="submit" class="login-btn">Log In</button>
+
+                <div class="login-footer">
+                    <p>Don't have an account?
+                        <a href="index.html#contact" class="register-link">Register here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    </section>
+    <!-- Add these in <head> or before </body> -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <!-- Add this before loading script.js -->
+    <script>
+        // Disable slideshow functionality on login page
+        window.DISABLE_SLIDESHOW = true;
+    </script>
+
+    <script src="login.js"></script>
+
+
+    <!-- Add to head section -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+
+    <!-- Add after your other scripts -->
+    <script src="firebase-config.js"></script>
+</body>
+
+</html>

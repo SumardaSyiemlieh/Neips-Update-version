@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Training Dashboard</title>
+    <link rel="stylesheet" href="staff-dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2>NeIPS</h2>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="#" class="menu-link active" data-target="dashboard">
+                        <div class="menu-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-target="create-batch">
+                        <div class="menu-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <span>Create Batch</span>
+                    </a>
+                </li>
+                <!-- Add this to the sidebar menu in staff.html -->
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-target="task-management">
+                        <div class="menu-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <span>Task Management</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-target="manage-attendance">
+                        <div class="menu-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <span>Manage Attendance</span>
+                    </a>
+                </li>
+                <li class="menu-item dropdown">
+                    <a href="#" class="menu-link dropdown-toggle" data-target="student-training">
+                        <div class="menu-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span>Student Under Training</span>
+                        <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" data-submenu="total-student-training"><i class="fas fa-user-graduate"></i>Total
+                                Student Training</a></li>
+                        <li><a href="#" data-submenu="total-reskilling"><i class="fas fa-retweet"></i>Total Reskilling
+                                Training</a></li>
+                        <li><a href="#" data-submenu="total-upskilling"><i class="fas fa-chart-line"></i>Total
+                                Upskilling</a></li>
+                        <li><a href="#" data-submenu="number-batches"><i class="fas fa-layer-group"></i>Number of
+                                Batches</a></li>
+                        <li><a href="#" data-submenu="total-trained"><i class="fas fa-award"></i>Total Students
+                                Trained</a></li>
+                        <li><a href="#" data-submenu="scheme"><i class="fas fa-project-diagram"></i>Scheme</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" data-target="add-staff">
+                        <div class="menu-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span>Add Staff</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-role">Center Manager</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="centerDashboardTitle">Student Training Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-buttons">
+                        <div class="button-row bottom-row">
+
+                            <button class="logout-btn" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="content-section" id="task-management-content">
+                <div class="batch-management">
+                    <div class="batch-header">
+                        <h2><i class="fas fa-tasks"></i> Task Management - <span id="currentCenterName"></span></h2>
+                        <div class="header-actions">
+                            <button class="btn-primary" onclick="refreshTasks()">
+                                <i class="fas fa-sync-alt"></i> Refresh Tasks
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Task Filters -->
+                    <div class="batch-filters">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="task-status-filter">Status</label>
+                                <select id="task-status-filter" onchange="filterTasks()">
+                                    <option value="all">All Tasks</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="overdue">Overdue</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="task-priority-filter">Priority</label>
+                                <select id="task-priority-filter" onchange="filterTasks()">
+                                    <option value="all">All Priorities</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tasks Container -->
+                    <div class="tasks-container">
+                        <div class="tasks-stats">
+                            <div class="task-stat-card">
+                                <div class="stat-icon pending">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="pending-tasks-count">0</h3>
+                                    <p>Pending</p>
+                                </div>
+                            </div>
+                            <div class="task-stat-card">
+                                <div class="stat-icon in-progress">
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="progress-tasks-count">0</h3>
+                                    <p>In Progress</p>
+                                </div>
+                            </div>
+                            <div class="task-stat-card">
+                                <div class="stat-icon completed">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="completed-tasks-count">0</h3>
+                                    <p>Completed</p>
+                                </div>
+                            </div>
+                            <div class="task-stat-card">
+                                <div class="stat-icon overdue">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="overdue-tasks-count">0</h3>
+                                    <p>Overdue</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tasks List -->
+                        <div class="tasks-list" id="tasks-list">
+                            <div class="loading-state">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading tasks...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dynamic Content Area -->
+            <div id="dynamic-content">
+                <!-- Dashboard Content -->
+                <div class="content-section active" id="dashboard-content">
+                    <!-- Stats Overview -->
+                    <div class="stats-overview">
+                        <div class="stat-card primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>725</h3>
+                                <p>Total Students Trained</p>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                12%
+                            </div>
+                        </div>
+
+                        <div class="stat-card success">
+                            <div class="stat-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>141</h3>
+                                <p>Self Employed</p>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                8%
+                            </div>
+                        </div>
+
+                        <div class="stat-card warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>35</h3>
+                                <p>Active Batches</p>
+                            </div>
+                            <div class="stat-trend down">
+                                <i class="fas fa-arrow-down"></i>
+                                3%
+                            </div>
+                        </div>
+
+                        <div class="stat-card info">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>87%</h3>
+                                <p>Completion Rate</p>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                5%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Dashboard Cards -->
+                    <div class="dashboard-cards">
+                        <div class="main-card fresh-skilling">
+                            <div class="card-header">
+                                <h3><i class="fas fa-seedling"></i> Total Fresh Skilling</h3>
+                                <div class="card-badge">Active</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="main-stat">
+                                    <span class="stat-number">60</span>
+                                    <span class="stat-label">Students Enrolled</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Number of Batches</span>
+                                        <span class="detail-value">35</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%"></div>
+                                        </div>
+                                        <span class="progress-text">85% Completion Rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-card reskilling">
+                            <div class="card-header">
+                                <h3><i class="fas fa-retweet"></i> Total Reskilling Training</h3>
+                                <div class="card-badge">Update Required</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="main-stat">
+                                    <span class="stat-number">0</span>
+                                    <span class="stat-label">Current Enrollment</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Total Students Trained</span>
+                                        <span class="detail-value">725</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 92%"></div>
+                                        </div>
+                                        <span class="progress-text">92% Success Rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-card upskilling">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-line"></i> Total Upskilling</h3>
+                                <div class="card-badge">New</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="main-stat">
+                                    <span class="stat-number">0</span>
+                                    <span class="stat-label">Active Programs</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Total Students Placed</span>
+                                        <span class="detail-value">17</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 45%"></div>
+                                        </div>
+                                        <span class="progress-text">45% Placement Rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-card self-employed">
+                            <div class="card-header">
+                                <h3><i class="fas fa-user-tie"></i> Self Employed</h3>
+                                <div class="card-badge success">Excellent</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="main-stat">
+                                    <span class="stat-number">141</span>
+                                    <span class="stat-label">Entrepreneurs</span>
+                                </div>
+                                <div class="card-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Success Rate</span>
+                                        <span class="detail-value">78%</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 78%"></div>
+                                        </div>
+                                        <span class="progress-text">78% Business Success</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Replace your existing create-batch-content with this: -->
+                <div class="content-section" id="create-batch-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-plus-circle"></i> Batch Management - <span
+                                    id="currentCenterBatchName"></span></h2>
+                            <div class="header-actions">
+                                <button class="btn-secondary" onclick="exportToExcel()">
+                                    <i class="fas fa-file-excel"></i> Export to Excel
+                                </button>
+                                <button class="btn-primary" onclick="showCreateBatchForm()">
+                                    <i class="fas fa-plus"></i> Create New Batch
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Current Batches Table -->
+                        <div class="batch-table-container">
+                            <div class="batch-table-header">
+                                <h3>Current Batches</h3>
+                                <div class="table-controls">
+                                    <div class="search-box">
+                                        <input type="text" placeholder="Search batches..." id="batch-search"
+                                            onkeyup="filterBatches()">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="records-per-page">
+                                        <span>Show</span>
+                                        <select id="records-per-page" onchange="updateBatchTable()">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        <span>entries</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table class="batch-table" id="batch-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Batch ID</th>
+                                            <th>Sector</th>
+                                            <th>Trade</th>
+                                            <th>Students</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Timing</th>
+                                            <th>Faculty</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="batch-table-body">
+                                        <tr>
+                                            <td colspan="10" class="no-data">Loading batches from database...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="batch-table-footer">
+                                <div class="table-info" id="batch-table-info">
+                                    Showing 0 to 0 of 0 entries
+                                </div>
+                                <div class="pagination" id="batch-pagination">
+                                    <button disabled>Previous</button>
+                                    <button class="active">1</button>
+                                    <button>Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Batch Modal -->
+                <div class="modal-overlay" id="createBatchModal" style="display: none;">
+                    <div class="modal-content large-modal">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-plus-circle"></i> Create New Batch</h3>
+                            <button class="close-modal" onclick="closeCreateBatchModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createBatchForm">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="batch-id">Batch ID *</label>
+                                        <input type="text" id="batch-id" placeholder="Auto-generated" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sector">Sector *</label>
+                                        <select id="sector" required>
+                                            <option value="">Select Sector</option>
+                                            <option value="Apparel Make-Ups & Home Furnishing">Apparel Make-Ups & Home
+                                                Furnishing</option>
+                                            <option value="Construction">Construction</option>
+                                            <option value="Capital Goods">Capital Goods</option>
+                                            <option value="Food Industry">Food Industry</option>
+                                            <option value="Security & Wellness">Security & Wellness</option>
+                                            <option value="Trade">Trade</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="trade">Trade/Course *</label>
+                                        <select id="trade" required>
+                                            <option value="">Select Trade</option>
+                                            <option value="SM - Fashion Designer">SM - Fashion Designer</option>
+                                            <option value="General Masonry Non NSQF">General Masonry Non NSQF</option>
+                                            <option value="Mason Metals-Graphs and Stone Non NSQF">Mason Metals-Graphs
+                                                and Stone Non NSQF</option>
+                                            <option value="First and Fabrication Non NSQF">First and Fabrication Non
+                                                NSQF</option>
+                                            <option value="Almirah-Making Pleads">Almirah-Making Pleads</option>
+                                            <option value="Specialty Party">Specialty Party</option>
+                                            <option value="SM - Senior Beauty & Spa">SM - Senior Beauty & Spa</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="max-capacity">Max Capacity *</label>
+                                        <input type="number" id="max-capacity" value="30" min="1" max="30" readonly>
+                                        <small>Maximum 30 students per batch</small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="start-date">Start Date *</label>
+                                        <input type="date" id="start-date" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="end-date">End Date *</label>
+                                        <input type="date" id="end-date" required>
+                                    </div>
+
+                                    <!-- In your getBatchManagementHTML function, ensure these IDs match -->
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="batchStartTime">Start Time *</label>
+                                            <input type="time" id="batchStartTime" required value="09:00">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="batchEndTime">End Time *</label>
+                                            <input type="time" id="batchEndTime" required value="17:00">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="faculty">Faculty *</label>
+                                        <select id="faculty" required>
+                                            <option value="">Select Faculty</option>
+                                            <option value="Northeastern Mule">Northeastern Mule</option>
+                                            <option value="Balearaker Nongjiang">Balearaker Nongjiang</option>
+                                            <option value="Pondshomiting Bondingway">Pondshomiting Bondingway</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="batch-status">Status *</label>
+                                        <select id="batch-status" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Upcoming">Upcoming</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Student List Section -->
+                                <div class="student-list-section">
+                                    <h4><i class="fas fa-users"></i> Student Enrollment (<span
+                                            id="student-count">0</span>/30)</h4>
+                                    <div class="student-list" id="student-list">
+                                        <div class="empty-state">
+                                            <i class="fas fa-user-plus"></i>
+                                            <p>No students added yet. Add students to this batch.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="student-actions">
+                                        <button type="button" class="btn-secondary" onclick="showAddStudentModal()">
+                                            <i class="fas fa-user-plus"></i> Add Student
+                                        </button>
+                                        <button type="button" class="btn-secondary" onclick="importStudentsFromSheet()">
+                                            <i class="fas fa-file-import"></i> Import from Sheet
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary"
+                                onclick="closeCreateBatchModal()">Cancel</button>
+                            <button type="button" class="btn-primary" onclick="saveBatch()">Save Batch</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Student Modal -->
+                <div class="modal-overlay" id="addStudentModal" style="display: none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Add Student to Batch</h3>
+                            <button class="close-modal" onclick="closeAddStudentModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="student-search">Search Student</label>
+                                <div class="search-student">
+                                    <input type="text" id="student-search" placeholder="Search by name or ID...">
+                                    <button type="button" class="btn-secondary" onclick="searchStudents()">
+                                        <i class="fas fa-search"></i> Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="student-search-results" id="student-search-results">
+                                <div class="empty-state">
+                                    <i class="fas fa-search"></i>
+                                    <p>Search for students to add to this batch</p>
+                                </div>
+                            </div>
+
+                            <div class="manual-add-student">
+                                <h4>Or Add Manually</h4>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="manual-student-name">Student Name *</label>
+                                        <input type="text" id="manual-student-name" placeholder="Enter student name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual-student-id">Student ID</label>
+                                        <input type="text" id="manual-student-id" placeholder="Enter student ID">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-secondary" onclick="addManualStudent()">
+                                    <i class="fas fa-plus"></i> Add Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Students Modal -->
+                <div class="modal-overlay" id="view-students-modal" style="display: none;">
+                    <div class="modal-content large-modal">
+                        <div class="modal-header">
+                            <h3 id="view-students-title">Batch Students</h3>
+                            <button class="close-modal" onclick="closeViewStudentsModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="students-list" id="batch-students-list">
+                                <!-- Students will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-secondary" onclick="closeViewStudentsModal()">Close</button>
+                            <button class="btn-primary" onclick="exportBatchStudents()">
+                                <i class="fas fa-file-excel"></i> Export to Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Manage Attendance Content -->
+                <div class="content-section" id="manage-attendance-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-clipboard-check"></i> Attendance Management</h2>
+                            <button class="btn-primary">
+                                <i class="fas fa-download"></i> Export Report
+                            </button>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Attendance Management System</h3>
+                            <p>Track and manage student attendance records.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Staff Content -->
+                <div class="content-section" id="add-staff-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-user-plus"></i> Staff Management</h2>
+                            <button class="btn-primary">
+                                <i class="fas fa-plus"></i> Add New Staff
+                            </button>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Staff Management System</h3>
+                            <p>Add and manage staff members for your center.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Training Submenus -->
+                <div class="content-section" id="total-student-training-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-user-graduate"></i> Total Student Training</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Total Student Training Overview</h3>
+                            <p>View comprehensive statistics and reports on student training.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" id="total-reskilling-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-retweet"></i> Total Reskilling Training</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Reskilling Training Overview</h3>
+                            <p>Monitor and manage reskilling training programs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" id="total-upskilling-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-chart-line"></i> Total Upskilling</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Upskilling Programs</h3>
+                            <p>Track upskilling initiatives and their progress.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" id="number-batches-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-layer-group"></i> Number of Batches</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Batch Statistics</h3>
+                            <p>View detailed information about all training batches.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" id="total-trained-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-award"></i> Total Students Trained</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Training Completion Statistics</h3>
+                            <p>Review comprehensive data on students who have completed training.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" id="scheme-content">
+                    <div class="batch-management">
+                        <div class="batch-header">
+                            <h2><i class="fas fa-project-diagram"></i> Scheme Management</h2>
+                        </div>
+                        <div class="content-placeholder">
+                            <h3>Training Schemes</h3>
+                            <p>Manage and monitor different training schemes and programs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="staff-dashboard.js"></script>
+    
+</body>
+
+</html>

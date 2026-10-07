@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat - NeIPS</title>
+    <link rel="stylesheet" href="chatbot.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- NEIPS ChatBot Widget -->
+    <div id="neips-chatbot" class="chatbot-widget">
+        <!-- Chat Bubble -->
+        <div id="chatbotBubble" class="chatbot-bubble hidden">
+            <div class="bubble-content">
+                <i class="fas fa-robot"></i>
+                <p>Have questions? I'm here to help!</p>
+                <span class="bubble-close">&times;</span>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button id="chatbotToggle" class="chatbot-toggle">
+            <i class="fas fa-comment-dots"></i>
+            <span class="chatbot-badge">1</span>
+        </button>
+
+        <!-- Chat Container -->
+        <div id="chatbotContainer" class="chatbot-container">
+            <!-- Header -->
+            <div id="chatbotHeader" class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chatbot-info">
+                    <h3>NeIPS Assistant</h3>
+                    <p class="status"><span class="status-dot"></span> Online</p>
+                </div>
+                <button id="chatbotClose" class="chatbot-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="chatbotMessages" class="chatbot-messages">
+                <!-- Messages will be inserted here -->
+            </div>
+
+            <!-- Quick Questions -->
+            <div id="quickQuestions" class="quick-questions">
+                <!-- Quick question buttons will be inserted here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" placeholder="Type your question here..." maxlength="200">
+                <button id="chatbotSend" class="chatbot-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="chatbot-footer">
+                <p>💡 Try asking about courses, admissions, or fees</p>
+            </div>
+        </div>
+    </div>
+    <script src="chatbot.js"></script>
+    
+    </body>
+
+</html>

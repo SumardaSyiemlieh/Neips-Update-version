@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal - NEIPS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+    <link rel="stylesheet" href="staff.css">
+    <!-- Add to your staff.html head -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@latest"></script>
+    <!-- Add these to your HTML head -->
+    <script src="https://unpkg.com/face-api.js"></script>
+    <!-- Add to your HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js/dist/face-api.min.js"></script>
+    <!-- WebAuthn polyfill for older browsers -->
+    <script src="https://unpkg.com/webauthn-polyfill/dist/webauthn-polyfill.min.js"></script>
+    <!-- Scripts -->
+    <!-- Firebase Core (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Firebase config -->
+    <script src="firebase.config.js"></script>
+
+</head>
+
+<body>
+    <!-- Notification System -->
+    <div id="notification" class="notification"></div>
+    <div id="notification-overlay" class="notification-overlay"></div>
+
+    <!-- Header with Profile -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo-title">
+                <img src="../../images/NeIPS-logo.jpg" alt="NEIPS Logo" class="logo">
+                <h1>NeIPS</h1>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown">
+                <button class="profile-btn" id="profileBtn">
+                    <div class="profile-info-small">
+                        <img src="" alt="Profile" id="profileImage" class="profile-img">
+                        <span id="staffNameHeader">Staff Name</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </button>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-profile">
+                        <img src="" alt="Profile" id="dropdownProfileImage" class="dropdown-img">
+                        <div class="dropdown-info">
+                            <h4 id="dropdownName">Staff Name</h4>
+                            <p id="dropdownRole">Staff Role</p>
+                            <p id="dropdownEmail">email@example.com</p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="viewProfileBtn">
+                        <i class="fas fa-user"></i>
+                        <span>View Profile</span>
+                    </a>
+                    <a href="#" class="dropdown-item" id="editProfileBtn">
+                        <i class="fas fa-edit"></i>
+                        <span>Edit Profile</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-menu">
+                <div class="menu-section">
+                    <h3>MAIN NAVIGATION</h3>
+                    <a href="#" class="menu-item active" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="daily-attendance">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Daily Attendance</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="attendance">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Attendance History</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="leave-report">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <span>Leave Report</span>
+                    </a>
+
+                </div>
+
+                <div class="menu-section">
+                    <h3>ATTENDANCE MARKING</h3>
+                    <div class="attendance-mode">
+                        <label>Attendance Method:</label>
+                        <div class="mode-selector">
+                            <button class="mode-btn active" data-mode="biometric">
+                                <i class="fas fa-fingerprint"></i>
+                                Biometric
+                            </button>
+                            <button class="mode-btn" data-mode="face">
+                                <i class="fas fa-camera"></i>
+                                Face
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="#" class="menu-item" id="markAttendanceBtn">
+                        <i class="fas fa-clock"></i>
+                        <span>Mark Attendance</span>
+                    </a>
+
+                    <a href="#" class="menu-item" id="biometricSectionBtn">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>Biometric Setup</span>
+                    </a>
+
+                    <a href="#" class="menu-item" id="faceAuthSectionBtn">
+                        <i class="fas fa-camera"></i>
+                        <span>Face Setup</span>
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <h3>REPORTS</h3>
+                    <a href="#" class="menu-item" data-page="monthly-report">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Monthly Report</span>
+                    </a>
+
+                </div>
+
+                <div class="menu-section">
+                    <h3>SETTINGS</h3>
+                    <a href="#" class="menu-item" data-page="profile">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Profile Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Dashboard Page (Default) -->
+            <section class="page-content active" id="dashboard">
+                <div class="page-header">
+                    <h2>Staff Dashboard</h2>
+                    <p id="dashboardDate">Today's Overview</p>
+                    <div class="header-actions">
+                        <button class="btn-action" id="markAttendanceDashboard">
+                            <i class="fas fa-clock"></i>
+                            Mark Attendance
+                        </button>
+                        <button class="btn-action" id="viewTodayReport">
+                            <i class="fas fa-file-alt"></i>
+                            Today's Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Monthly Overview Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card present">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Present This Month</h3>
+                            <p id="presentMonthCount">0</p>
+                            <small>Days worked</small>
+                        </div>
+                    </div>
+                    <div class="stat-card absent">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Absent This Month</h3>
+                            <p id="absentMonthCount">0</p>
+                            <small>Days absent</small>
+                        </div>
+                    </div>
+                    <div class="stat-card late">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Late This Month</h3>
+                            <p id="lateMonthCount">0</p>
+                            <small>Late arrivals</small>
+                        </div>
+                    </div>
+                    <div class="stat-card leave">
+                        <div class="stat-icon">
+                            <i class="fas fa-umbrella-beach"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Leave This Month</h3>
+                            <p id="leaveMonthCount">0</p>
+                            <small>Leave days</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Status -->
+                <div class="today-status-card">
+                    <div class="status-header">
+                        <h3><i class="fas fa-calendar-check"></i> Today's Status</h3>
+                        <div class="status-badge" id="todayStatusBadge">Not Checked In</div>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-item">
+                            <span>Check-in Time:</span>
+                            <strong id="todayCheckin">--:--</strong>
+                        </div>
+                        <div class="status-item">
+                            <span>Check-out Time:</span>
+                            <strong id="todayCheckout">--:--</strong>
+                        </div>
+                        <div class="status-item">
+                            <span>Total Hours:</span>
+                            <strong id="todayHours">0h 0m</strong>
+                        </div>
+                        <div class="status-item">
+                            <span>Status:</span>
+                            <strong id="todayAttendanceStatus">Absent</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="chart-section">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Monthly Attendance Trend</h3>
+                            <select id="monthSelect" class="chart-select">
+                                <option value="0">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
+                        </div>
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Weekly Overview</h3>
+                        </div>
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <div class="activity-list" id="recentActivity">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Attendance Page -->
+            <section class="page-content" id="daily-attendance">
+                <div class="page-header">
+                    <h2>Daily Attendance</h2>
+                    <p>View your daily attendance records</p>
+                </div>
+
+                <div class="attendance-controls">
+                    <div class="date-filter">
+                        <label for="dailyDate"><i class="fas fa-calendar"></i> Select Date:</label>
+                        <input type="date" id="dailyDate" value="">
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn-filter active" data-filter="all">All</button>
+                        <button class="btn-filter" data-filter="present">Present</button>
+                        <button class="btn-filter" data-filter="absent">Absent</button>
+                        <button class="btn-filter" data-filter="late">Late</button>
+                        <button class="btn-filter" data-filter="leave">Leave</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="daily-attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Day</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Working Hours</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailyAttendanceBody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="summary-card">
+                    <h3><i class="fas fa-chart-pie"></i> Monthly Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span>Total Working Days:</span>
+                            <strong id="totalWorkingDays">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Present Days:</span>
+                            <strong id="presentDaysCount">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Absent Days:</span>
+                            <strong id="absentDaysCount">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Late Days:</span>
+                            <strong id="lateDaysCount">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Leave Days:</span>
+                            <strong id="leaveDaysCount">0</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Attendance Rate:</span>
+                            <strong id="attendanceRate">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attendance History Page -->
+            <section class="page-content" id="attendance">
+                <div class="page-header">
+                    <h2>Attendance History</h2>
+                    <p>View your complete attendance history</p>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="historyMonth"><i class="fas fa-calendar-alt"></i> Month:</label>
+                            <select id="historyMonth">
+                                <option value="">All Months</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="historyYear"><i class="fas fa-calendar"></i> Year:</label>
+                            <select id="historyYear">
+                                <option value="">All Years</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="historyStatus"><i class="fas fa-filter"></i> Status:</label>
+                            <select id="historyStatus">
+                                <option value="">All Status</option>
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">Late</option>
+                                <option value="leave">Leave</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Day</th>
+                                <th>Check-in Time</th>
+                                <th>Check-out Time</th>
+                                <th>Total Hours</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th>Marked By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceHistoryBody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prevHistoryPage" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span id="historyPageInfo">Page 1 of 1</span>
+                    <button id="nextHistoryPage" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+            <!-- Monthly Report Page -->
+            <section class="page-content" id="monthly-report">
+                <div class="page-header">
+                    <h2>Monthly Attendance Report</h2>
+                    <p>View detailed monthly attendance statistics</p>
+                </div>
+
+                <div class="report-controls">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="reportMonth"><i class="fas fa-calendar-alt"></i> Month:</label>
+                            <select id="reportMonth">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="reportYear"><i class="fas fa-calendar"></i> Year:</label>
+                            <select id="reportYear">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button class="btn-primary" id="generateMonthlyReport">
+                                <i class="fas fa-chart-bar"></i> Generate Report
+                            </button>
+                            <button class="btn-secondary" id="downloadMonthlyReport">
+                                <i class="fas fa-download"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add this after the report controls div -->
+                <div class="report-status" id="reportStatus" style="display: none;">
+                    <div class="status-message">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span id="statusText">Generating report...</span>
+                    </div>
+                </div>
+                <div class="monthly-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Working Days</h4>
+                                <p id="monthlyWorkingDays">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Present Days</h4>
+                                <p id="monthlyPresentDays">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Absent Days</h4>
+                                <p id="monthlyAbsentDays">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Late Days</h4>
+                                <p id="monthlyLateDays">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-umbrella-beach"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Leave Days</h4>
+                                <p id="monthlyLeaveDays">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="summary-content">
+                                <h4>Attendance %</h4>
+                                <p id="monthlyAttendancePercent">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="monthly-details">
+                    <div class="detail-card">
+                        <h3><i class="fas fa-calendar-day"></i> Daily Breakdown</h3>
+                        <div class="table-wrapper">
+                            <table class="monthly-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Day</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Working Hours</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monthlyReportBody">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <h3><i class="fas fa-chart-pie"></i> Monthly Statistics</h3>
+                        <div class="chart-container">
+                            <canvas id="monthlyPieChart"></canvas>
+                        </div>
+                        <div class="statistics-grid">
+                            <div class="stat-item">
+                                <span>Total Working Days:</span>
+                                <strong id="totalWorkingDaysMonthly">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Days Present:</span>
+                                <strong id="daysPresentMonthly">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Days Late:</span>
+                                <strong id="daysLateMonthly">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Days Leave:</span>
+                                <strong id="daysLeaveMonthly">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Days Absent:</span>
+                                <strong id="daysAbsentMonthly">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Attendance Rate:</span>
+                                <strong id="attendanceRateMonthly">0%</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="working-hours-summary">
+                    <h3><i class="fas fa-clock"></i> Working Hours Summary</h3>
+                    <div class="hours-grid">
+                        <div class="hour-item">
+                            <span>Total Hours Worked:</span>
+                            <strong id="totalHoursWorked">0h 0m</strong>
+                        </div>
+                        <div class="hour-item">
+                            <span>Average Daily Hours:</span>
+                            <strong id="avgDailyHours">0h 0m</strong>
+                        </div>
+                        <div class="hour-item">
+                            <span>Shortest Day:</span>
+                            <strong id="shortestDay">0h 0m</strong>
+                        </div>
+                        <div class="hour-item">
+                            <span>Longest Day:</span>
+                            <strong id="longestDay">0h 0m</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attendance Report Page -->
+            <section class="page-content" id="attendance-report">
+                <div class="page-header">
+                    <h2>Detailed Attendance Report</h2>
+                    <p>Generate comprehensive attendance reports</p>
+                </div>
+
+                <div class="report-filters">
+                    <div class="filter-section">
+                        <h3><i class="fas fa-filter"></i> Report Filters</h3>
+                        <div class="filter-grid">
+                            <div class="filter-group">
+                                <label for="reportType">Report Type:</label>
+                                <select id="reportType">
+                                    <option value="monthly">Monthly Summary</option>
+                                    <option value="quarterly">Quarterly Report</option>
+                                    <option value="yearly">Yearly Overview</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="reportStartDate">From Date:</label>
+                                <input type="date" id="reportStartDate">
+                            </div>
+                            <div class="filter-group">
+                                <label for="reportEndDate">To Date:</label>
+                                <input type="date" id="reportEndDate">
+                            </div>
+                            <div class="filter-group">
+                                <label for="reportFormat">Format:</label>
+                                <select id="reportFormat">
+                                    <option value="summary">Summary View</option>
+                                    <option value="detailed">Detailed View</option>
+                                    <option value="comparative">Comparative View</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="btn-primary" id="generateReportBtn">
+                                <i class="fas fa-chart-line"></i> Generate Report
+                            </button>
+                            <button class="btn-secondary" id="exportReportBtn">
+                                <i class="fas fa-file-export"></i> Export Report
+                            </button>
+                            <button class="btn-secondary" id="printReportBtn">
+                                <i class="fas fa-print"></i> Print Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-results" id="reportResults">
+                    <div class="report-header">
+                        <h3 id="reportTitle">Attendance Report</h3>
+                        <p id="reportPeriod">Select filters and generate report</p>
+                    </div>
+
+                    <div class="report-summary" id="reportSummary">
+                        <!-- Summary cards will be inserted here -->
+                    </div>
+
+                    <div class="report-table-section" id="reportTableSection">
+                        <!-- Table will be inserted here -->
+                    </div>
+
+                    <div class="report-charts" id="reportCharts">
+                        <!-- Charts will be inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leave Report Page -->
+            <section class="page-content" id="leave-report">
+                <div class="page-header">
+                    <h2>Leave Report</h2>
+                    <p>View your leave applications and status</p>
+                </div>
+
+                <div class="leave-controls">
+                    <button class="btn-primary" id="applyLeaveBtn">
+                        <i class="fas fa-plus"></i> Apply for Leave
+                    </button>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="leaveYear">Year:</label>
+                            <select id="leaveYear">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="leaveType">Leave Type:</label>
+                            <select id="leaveType">
+                                <option value="">All Types</option>
+                                <option value="casual">Casual Leave</option>
+                                <option value="sick">Sick Leave</option>
+                                <option value="earned">Earned Leave</option>
+                                <option value="maternity">Maternity Leave</option>
+                                <option value="paternity">Paternity Leave</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="leaveStatus">Status:</label>
+                            <select id="leaveStatus">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="leave-table">
+                        <thead>
+                            <tr>
+                                <th>Leave ID</th>
+                                <th>Leave Type</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Total Days</th>
+                                <th>Reason</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveReportBody">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="leave-summary">
+                    <div class="summary-section">
+                        <h3>Leave Balance</h3>
+                        <div class="balance-grid">
+                            <div class="balance-item">
+                                <span>Casual Leave:</span>
+                                <strong id="casualLeaveBalance">12</strong>
+                            </div>
+                            <div class="balance-item">
+                                <span>Sick Leave:</span>
+                                <strong id="sickLeaveBalance">15</strong>
+                            </div>
+                            <div class="balance-item">
+                                <span>Earned Leave:</span>
+                                <strong id="earnedLeaveBalance">30</strong>
+                            </div>
+                            <div class="balance-item">
+                                <span>Maternity Leave:</span>
+                                <strong id="maternityLeaveBalance">180</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-section">
+                        <h3>Leave Statistics</h3>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <span>Total Applied:</span>
+                                <strong id="totalLeaveApplied">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Approved:</span>
+                                <strong id="approvedLeave">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Pending:</span>
+                                <strong id="pendingLeave">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Rejected:</span>
+                                <strong id="rejectedLeave">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mark Attendance Modal -->
+            <div class="modal" id="markAttendanceModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Mark Attendance</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="attendance-mode-selector">
+                            <div class="mode-option active" data-mode="biometric">
+                                <i class="fas fa-fingerprint"></i>
+                                <span>Biometric</span>
+                            </div>
+                            <div class="mode-option" data-mode="face">
+                                <i class="fas fa-camera"></i>
+                                <span>Face Recognition</span>
+                            </div>
+                        </div>
+
+                        <div class="attendance-container">
+                            <div id="biometricSection" class="attendance-section active">
+                                <div class="scanner-placeholder">
+                                    <div class="fingerprint-icon">
+                                        <i class="fas fa-fingerprint"></i>
+                                    </div>
+                                    <div class="scanning-line"></div>
+                                </div>
+                                <div class="attendance-info">
+                                    <p>Place your finger on the scanner to mark attendance</p>
+                                    <div class="status-indicator">
+                                        <span class="status-dot"></span>
+                                        <span id="biometricStatus">Ready</span>
+                                    </div>
+                                </div>
+                                <div id="mobileInstructions"
+                                    style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 15px; border-left: 4px solid #3498db;">
+                                    <p style="margin: 0; font-size: 14px;">
+                                        <strong>📱 Mobile Instructions:</strong> Use your phone's fingerprint sensor
+                                        (usually on the back or side)
+                                    </p>
+                                </div>
+                                <div class="attendance-actions">
+                                    <button class="btn-primary" id="startBiometricScan">
+                                        <i class="fas fa-play"></i>
+                                        Start Scan
+                                    </button>
+                                    <button class="btn-secondary" id="manualCheckin">
+                                        <i class="fas fa-keyboard"></i>
+                                        Manual Check-in
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="faceSection" class="attendance-section">
+                                <div class="camera-preview">
+                                    <video id="attendanceVideo" autoplay playsinline></video>
+                                    <canvas id="attendanceCanvas" width="640" height="480"></canvas>
+                                    <div class="face-guide"></div>
+                                </div>
+                                <div class="attendance-info">
+                                    <p>Position your face in the frame for recognition</p>
+                                    <div class="status-indicator">
+                                        <span class="status-dot"></span>
+                                        <span id="faceStatus">Camera Off</span>
+                                    </div>
+                                </div>
+                                <!-- Add this inside your face section -->
+                                <div id="faceInstructions"
+                                    style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 15px; border-left: 4px solid #3498db;">
+                                    <p style="margin: 0; font-size: 14px;">
+                                        <strong>📱 Mobile Instructions:</strong> Make sure face is well-lit and visible
+                                    </p>
+                                </div>
+                                <div class="attendance-actions">
+                                    <button class="btn-primary" id="startFaceCamera">
+                                        <i class="fas fa-camera"></i>
+                                        Start Camera
+                                    </button>
+                                    <button class="btn-secondary" id="captureFaceAttendance">
+                                        <i class="fas fa-user-check"></i>
+                                        Capture & Verify
+                                    </button>
+                                    <button class="btn-danger" id="stopFaceCamera">
+                                        <i class="fas fa-stop"></i>
+                                        Stop Camera
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="attendance-result" id="attendanceResult">
+                            <!-- Will show attendance result -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <section class="page-content" id="profile">
+                <div class="page-header">
+                    <h2>Profile Settings</h2>
+                    <p>Manage your personal information and settings</p>
+                </div>
+
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-photo-section">
+                                <div class="photo-container">
+                                    <img src="" alt="Profile Photo" id="profilePhoto">
+                                    <div class="photo-overlay">
+                                        <button class="btn-change-photo" id="changePhotoBtn">
+                                            <i class="fas fa-camera"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="photo-info">
+                                    <h3 id="profileFullName">Loading...</h3>
+                                    <p id="profileStaffID">Staff ID: Loading...</p>
+                                    <p id="profileDepartment">Department: Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-tabs">
+                            <button class="tab-btn active" data-tab="personal">Personal Info</button>
+                            <button class="tab-btn" data-tab="employment">Employment</button>
+                            <button class="tab-btn" data-tab="emergency">Emergency Contact</button>
+                            <button class="tab-btn" data-tab="documents">Documents</button>
+                        </div>
+
+                        <div class="tab-content active" id="personalTab">
+                            <form id="personalInfoForm">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="profileFirstName">First Name</label>
+                                        <input type="text" id="profileFirstName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileLastName">Last Name</label>
+                                        <input type="text" id="profileLastName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileEmail">Email</label>
+                                        <input type="email" id="profileEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profilePhone">Phone</label>
+                                        <input type="tel" id="profilePhone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileDob">Date of Birth</label>
+                                        <input type="date" id="profileDob">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profileGender">Gender</label>
+                                        <select id="profileGender">
+                                            <option value="">Select</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="profileAddress">Address</label>
+                                        <textarea id="profileAddress" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-save">
+                                        <i class="fas fa-save"></i>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Other tabs content would go here -->
+                    </div>
+
+                    <div class="profile-sidebar">
+                        <div class="sidebar-card">
+                            <h3><i class="fas fa-chart-line"></i> Quick Stats</h3>
+                            <div class="stats-list">
+                                <div class="stat-item">
+                                    <span>Attendance This Month</span>
+                                    <strong id="profileAttendance">0%</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Total Working Days</span>
+                                    <strong id="profileWorkingDays">0</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Late Arrivals</span>
+                                    <strong id="profileLateArrivals">0</strong>
+                                </div>
+                                <div class="stat-item">
+                                    <span>Leave Balance</span>
+                                    <strong id="profileLeaveBalance">0</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- Wave Loading Animation -->
+    <div id="waveLoading" class="wave-loading">
+        <div class="wave-container">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="staff-registration.js"></script>
+    <!-- Add to head section -->
+
+</body>
+
+</html>
